@@ -1,6 +1,7 @@
 from main_form import MainForm
 from form_status import FormReturnStatus
 import logging
+from tkinter import messagebox
 
 
 def main_loop() -> None:
@@ -26,5 +27,6 @@ if __name__ == '__main__':
         log_handler = logging.FileHandler("log.txt")
         log = logging.getLogger()
         log.addHandler(log_handler)
-        log.exception("unhandled exception:")
+        log.exception("--- Logging unhandled exception ---")
         print("error: {}".format(e))
+        messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> please see log for more details".format(e))
