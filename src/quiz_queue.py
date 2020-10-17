@@ -22,9 +22,20 @@ class QuizQueue(object):
             del data_indicies[curr_idx]
 
 
-
     def recycle(self):
-        pass
+        new_queue: Queue = Queue()
+        idx: int = 0
+        # Add first 3 old items to the new queue.
+        while not self.__queue.empty() and idx < 3:
+            new_queue.put(self.__queue.get())
+            idx += 1
+        # Add the recycled element back into the new queue.
+        new_queue.put(self.__last_item)
+        # Finish copying the old queue items into the new queue.
+        while not self.__queue.empty():
+            new_queue.put(self.__queue.get())
+            idx += 1
+        self.__queue = new_queue
 
 
     def next(self) -> DataObject:
