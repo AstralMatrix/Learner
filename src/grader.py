@@ -19,9 +19,12 @@ class Grader(object):
         self.__curr_element: DataObject = self.__elements.next()
 
 
-    @property
-    def display(self) -> str:
-        return self.__curr_element
+    def get_display_question(self, segment_idx: int) -> str:
+        return self.__curr_element.segment_str(segment_idx)
+
+
+    def get_display_answer(self) -> str:
+        return str(self.__curr_element)
 
 
     def next(self) -> None:
@@ -29,4 +32,9 @@ class Grader(object):
 
     
     def check(self, input_str: str) -> bool:
-        return self.__curr_element.check(input_str)
+        is_correct: bool = self.__curr_element.check(input_str)
+        # If the answer is wrong add it back in near the front of the
+        # queue, so it can be given again.
+        if not is_correct:
+            self.__elements.recycle()
+        return is_correct
