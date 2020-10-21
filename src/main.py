@@ -2,11 +2,13 @@ from main_form import MainForm
 from form_status import FormReturnStatus
 import logging
 from tkinter import messagebox
+from file_reader import FileReader
 
 
 def main_loop() -> None:
 
     while True:
+        FileReader.load_settings()
         main_form: MainForm = MainForm()
         form_status: FormReturnStatus = FormReturnStatus.RUNNING
 
@@ -14,7 +16,7 @@ def main_loop() -> None:
             form_status = main_form.update()
         
         if form_status is FormReturnStatus.RESTART:
-            main_form = MainForm()
+            continue
         else:
             break
 
@@ -29,4 +31,4 @@ if __name__ == '__main__':
         log.addHandler(log_handler)
         log.exception("--- Logging unhandled exception ---")
         print("error: {}".format(e))
-        messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> please see log for more details".format(e))
+        messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> see log for more details".format(e))
