@@ -5,24 +5,39 @@ from random import randint
 
 
 class QuizQueue(object):
+    '''A Queue to store DataObjects. The queue automatically randomizes
+        and refills itself every time it is empty. This means that 'next()'
+        can be called indefinitly. This allows for the user to be quized
+        on items randomly.'''
+
 
     def __init__(self, data: List[DataObject]):
+        # A list of all the DataObjects. This is used to refill the queue.
         self.__data: List[DataObject] = data
         self.__queue: Queue = Queue()
-        self.__last_item: DataObject = data[0]
+        self.__last_item: DataObject = data[0]  # The most recent item to be dequeued.
 
 
-    def __fill_queue(self):
+    def __fill_queue(self) -> None:
+        '''Refill the queue in a random order.'''
+        # A list of the indicies of all the elements to be inserted.
         data_indicies: List[int] = [i for i in range(len(self.__data))]
 
         while len(data_indicies) != 0:
+            # Generate a random index from data_indicies to insert.
             curr_idx: int = randint(0, len(data_indicies) - 1)
+            # Insert the DataObject from the given index, chosen by the random index.
             curr_item: DataObject = self.__data[data_indicies[curr_idx]]
             self.__queue.put(curr_item)
+            # Remove the index of object that was just inserted from the
+            # so it isn't added more than once.
             del data_indicies[curr_idx]
 
 
-    def recycle(self):
+    def recycle(self) -> None:
+        '''Re-inserts the last dequeued item back towards the front of the queue.
+            This is used in the case the user got a question wrong, so the same
+            question will reappear shortly after. '''
         new_queue: Queue = Queue()
         idx: int = 0
         # Add first 3 old items to the new queue.
@@ -39,6 +54,12 @@ class QuizQueue(object):
 
 
     def next(self) -> DataObject:
+        '''Dequeue and return the next element in the queue, refilling it
+            if necessary.
+
+            Returns:
+                DataObject: The object the user should be quized on.
+        '''
         if self.__queue.empty():
             self.__fill_queue()
 
