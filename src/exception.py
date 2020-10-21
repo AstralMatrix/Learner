@@ -25,6 +25,6 @@ def unhandled_error(item, exc, val, tb) -> None:
     exception = traceback.TracebackException(exc, val, tb)
     log.exception("--- Logging unhandled exception ---", exc_info=exception)
     print(exception)
-    messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> please see log for more details".format(val))
+    messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> see log for more details".format(val))
 
 
