@@ -3,6 +3,7 @@ from typing import List
 import os.path
 from data_object import DataObject
 from exception import error
+from settings import Settings, SETTINGS_PATH
 
 
 class FileReader:
@@ -74,3 +75,46 @@ class FileReader:
             return None
 
         return data
+
+
+    @staticmethod
+    def load_settings() -> None:
+        '''Reads in the settings json file and sets the settings values.
+
+            Returns:
+                None
+        '''
+        # Ensure the settings file exists.
+        if not os.path.exists(SETTINGS_PATH):
+            error("unable to find settings file at '{}', please ensure it exists. continuing to use default values". format(SETTINGS_PATH))
+            return
+
+        with open(SETTINGS_PATH, 'r') as f:
+            # Read in the json from the settings file, if the json is
+            # valid. All data verification checks are done by Settings
+            # when setting values, so none have to be done here.
+            s_data: dict
+            try:
+                s_data = json.loads(f.read())
+            except Exception as e:
+                error("invalid json in settings file '{}' <{}>. continuing to use default values".format(SETTINGS_PATH, e))
+                return
+        # Load the settings from the new data. All data verification
+        # checks are done by Settings when setting the new data.
+        Settings.load_from(s_data)
+
+    
+    @staticmethod
+    def save_settings() -> None:
+        '''Converts Settings to a json string and saves it to the settings json file.
+
+            Returns:
+                None
+        '''
+        # Ensure the settings file exists.
+        if not os.path.exists(SETTINGS_PATH):
+            error("unable to find settings file at '{}', unable to save. please ensure it exists". format(SETTINGS_PATH))
+            return
+
+        with open(SETTINGS_PATH, 'w') as f:
+            f.write(Settings.as_json())
