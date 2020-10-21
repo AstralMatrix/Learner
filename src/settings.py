@@ -19,6 +19,7 @@ class Settings:
     __raw_data: dict = {}
     directory_path: str = '../data/'  # Path to the data files.
     active_files: List[str] = []  # All data files that are active.
+    display_item: int = 0  # The segment of the DataObject to display as the question
     font_size: int = 44  # The current font size.
     typeface: str = 'Verdana'  # The current font.
     current_theme: str = "Default"  # The current theme key for the themes in the settings file.
@@ -71,6 +72,13 @@ class Settings:
             else: error("settings unable to load active files, list contents contained a type that was not a 'str'")
         else: error("settings unable to load active files, expected type 'list', got {}".format(type(new_active_files)))
         
+        # Verify and set the new display item. Ensure the display item is an integer.
+        new_display_item: int = data.get("display_item", None)
+        if new_display_item is not None and \
+           type(new_display_item) is int:
+            Settings.display_item = new_display_item
+        else: error("settings unable to load display item, expected type 'int', got {}".format(type(new_display_item)))
+
         # Verify and set the new font size. Ensure the font size is an integer.
         new_font_size: int = data.get("font_size", None)
         if new_font_size is not None and \
@@ -126,6 +134,7 @@ class Settings:
         ret_data: dict = Settings.__raw_data
         ret_data["directory_path"] = Settings.directory_path
         ret_data["active_files"] = Settings.active_files
+        ret_data["display_item"] = Settings.display_item
         ret_data["font_size"] = Settings.font_size
         ret_data["typeface"] = Settings.typeface
         ret_data["current_theme"] = Settings.current_theme
