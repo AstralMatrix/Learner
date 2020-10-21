@@ -31,7 +31,7 @@ class FileReader:
         '''
         data: List[DataObject] = []
         for file_path in file_paths:
-            file_path = file_path.strip()
+            file_path = os.path.join(Settings.directory_path, file_path)
 
             # Ensure the current file exists.
             if not os.path.exists(file_path):
