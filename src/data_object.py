@@ -1,4 +1,5 @@
 from typing import List
+from random import randint
 
 
 class DataObject(object):
@@ -19,6 +20,7 @@ class DataObject(object):
             segments (int): The number of segements the data contains.
     '''
     
+
     def __init__(self, data: List[List[str]]) -> None:
         self.__data: List[List[str]] = data
 
@@ -48,6 +50,8 @@ class DataObject(object):
 
     def segment_str(self, idx: int) -> str:
         ''' Returns the string of the segment of data at the given index.
+            Returns a random segment if the index is negative, or index 0
+            if the index is out of bounds.
         
             Args:
                 idx (int): The index of the desired segment.
@@ -55,17 +59,22 @@ class DataObject(object):
             Return:
                 str: A string of the segment data.
         '''
+        # Randomize the index if it is negative, or set it to 0 if it
+        # is out of bounds in the positive direction.
+        if idx < 0: idx = randint(0, self.segments - 1)
+        elif idx >= self.segments: idx = 0
+
         ret_val = ""
-        for string in self.__data[idx]:
+        for string in self.__data[idx]:  # Concat every part of the segment.
             ret_val += string + " | "
-        return ret_val[:-3].strip()
+        return ret_val[:-3].strip()  # Return the new string except for the trailing " | ".
 
 
     def __str__(self) -> str:
         ret_val: str = ""
-        for i in range(self.segments):
+        for i in range(self.segments):  # Concat every segment onto a new line.
             ret_val += self.segment_str(i) + "\n"
-        if ret_val.strip() == "": return "[EMPTY_DATAOBJECT]"
+        if ret_val.strip() == "": return "[EMPTY_DATAOBJECT]"  # Object has no data.
         return ret_val.strip()
 
 
