@@ -35,14 +35,14 @@ class MainForm(object):
         # Set form values from the settings.
         self.font_style: str = Settings.typeface
         self.font_size: int = Settings.font_size
+        self.display_item: int = Settings.display_item  # The segment of the data objects to display.
         self.theme: Theme = Theme()
-
+                
         # Create the main form and configure it.
         self.form = tk.Tk()
         self.form.geometry(INIT_SCREEN_SIZE)
         self.form.minsize(MIN_SCREEN_SIZE[0], MIN_SCREEN_SIZE[1])
         self.form.title(SCREEN_TITLE)
-
 
         self.frame: Frame = Frame(self.form)  # Create the main frame to hold all the elements.
         self.frame.pack(fill=BOTH, expand=1)  # Make the main frame fit the size of the window.
@@ -55,8 +55,6 @@ class MainForm(object):
         # allows them time to review the correct answer, and prevents
         # them from accidentaly skipping it.
         self.progress_blocked: bool = False
-        # The segment of the data objects to display.
-        self.display_item: int = 0
 
         # A queue that other threads can store function calls to be
         # executed by the main thread on a form update.
