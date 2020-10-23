@@ -23,8 +23,10 @@ class Settings:
     font_size: int = 44  # The current font size.
     typeface: str = 'Verdana'  # The current font.
     current_theme: str = "Default"  # The current theme key for the themes in the settings file.
+    theme_names: List[str] = []
     # The current theme colors.
     theme_colors: List[str] = ['#F0F0F0', '#D0D0D0', '#FFFFFF', '#000000', '#008000', '#B22222']
+
 
     @staticmethod
     def load_from(data: dict) -> None:
@@ -118,7 +120,30 @@ class Settings:
             if is_valid: Settings.theme_colors = new_theme_colors
             else: error("settings unable to load theme colors, list contents contained value that is not a valid color")
         else: error("settings unable to load theme colors, expected type 'list' with len(6), got {}".format(type(new_theme_colors)))
+
+        theme_dict: dict = data.get("all_themes", None)
+        if theme_dict is not None and \
+           type(theme_dict) is dict:
+            for key in theme_dict.keys():
+                if key is not None and \
+                   type(key) is str:
+                    Settings.theme_names.append(key)
+                else: error("settings unable to theme name, expected type 'str', got {}".format(type(key)))
+        else: error("settings unable to load theme names, expected type 'dict', got {}".format(type(theme_dict)))
     
+    
+    @staticmethod
+    def set_value(update_data: dict):
+        for key in update_data.keys():
+            if   key == "directory_path": Settings.directory_path = update_data.get(key)
+            elif key == "active_files"  : Settings.active_files = update_data.get(key)
+            elif key == "display_item"  : Settings.display_item = update_data.get(key)
+            elif key == "font_size"     : Settings.font_size = update_data.get(key)
+            elif key == "typeface"      : Settings.typeface = update_data.get(key)
+            elif key == "current_theme" :
+                Settings.current_theme = update_data.get(key)
+                Settings.theme_colors = Settings.__raw_data.get("all_themes").get(Settings.current_theme)
+ 
 
     @staticmethod
     def as_json() -> str:
