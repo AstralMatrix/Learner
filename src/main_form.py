@@ -9,6 +9,7 @@ from queue import Queue
 from threading import Timer
 import exception
 from settings import Settings
+from settings_form import SettingsForm
 
 
 INIT_SCREEN_SIZE: str = '854x405'  # Starting screen size.
@@ -37,6 +38,8 @@ class MainForm(object):
         self.font_size: int = Settings.font_size
         self.display_item: int = Settings.display_item  # The segment of the data objects to display.
         self.theme: Theme = Theme()
+
+        self.settings_form = None
                 
         # Create the main form and configure it.
         self.form = tk.Tk()
@@ -66,6 +69,14 @@ class MainForm(object):
         self.form.bind(RETURN_KEY, self.submit_callback)
         self.theme.set_theme_color()  # Theme the form.
         self.display(INITAL_MESSAGE)  # Show the user the welcome message.
+
+
+    def refresh_settings(self) -> None:
+        self.font_size = Settings.font_size
+        self.font_style = Settings.typeface
+        self.display_box.config(font=(self.font_style, self.font_size))
+        self.theme.update_colors()
+        self.theme.set_theme_color()
 
 
     def create_widgets(self) -> None:
@@ -166,7 +177,8 @@ class MainForm(object):
     def settings_callback(self):
         '''Callback function for the 'settings' button. This callback controls
             the settings window.'''
-        messagebox.showwarning("not implemented", "not implemented: settings functionality has not yet been implemented")
+        if self.settings_form is None:
+            self.settings_form = SettingsForm()
 
 
     def next_question(self) -> None:
@@ -232,6 +244,9 @@ class MainForm(object):
             function is called.
         '''
         try:
+            if self.settings_form is not None:
+                self.settings_form = self.settings_form.update()
+                self.refresh_settings()
             if not self.scheduled_actions.empty():
                 self.scheduled_actions.get()()  # Execute the scheduled function.
             self.form.update_idletasks()
