@@ -23,6 +23,7 @@ FIXED_ELEMENT_FONT_SIZE = 12  # Font size of all fixed font size ui elements.
 
 class MainForm(object):
 
+
     def __init__(self):
         # Set the exception callback to handle any of the exceptions
         # that are raised.
@@ -39,7 +40,11 @@ class MainForm(object):
         self.display_item: int = Settings.display_item  # The segment of the data objects to display.
         self.theme: Theme = Theme()
 
-        self.settings_form = None
+        self.settings_form: SettingsForm = None
+        # Tracks if the settings form has closed. If so preform singe action
+        # updates, such as updating the Grader, this is to limit number
+        # of unnessicary file reads.
+        self.update_after_settings_finish: bool = False
                 
         # Create the main form and configure it.
         self.form = tk.Tk()
@@ -72,6 +77,10 @@ class MainForm(object):
 
 
     def refresh_settings(self) -> None:
+        '''Update all elements with varying settings. This makes it so the
+            form doesn't need to be reset to apply settings, and settings
+            changes can be viewed live as they are made.'''
+        self.display_item = Settings.display_item  # The segment of the data objects to display.
         self.font_size = Settings.font_size
         self.font_style = Settings.typeface
         self.display_box.config(font=(self.font_style, self.font_size))
@@ -86,16 +95,12 @@ class MainForm(object):
         '''Form Layout Hierarchy:
 
             Main Frame
-            |
             |---Display Frame
             |   |---Display Box
-            |   |
             |---Content Frame
-            |   |
             |   |---Guess Frame
             |   |   |---Guess Label
             |   |   |---Guess Input
-            |   |
             |   |---Button Frame
             |   |   |---Submit Button
             |   |   |---Settings Button
@@ -247,6 +252,21 @@ class MainForm(object):
             if self.settings_form is not None:
                 self.settings_form = self.settings_form.update()
                 self.refresh_settings()
+                self.update_after_settings_finish = True
+            elif self.update_after_settings_finish:
+                # Only update the grader after the settings form has closed
+                # since it reads data files to get it's data, and we want to
+                # limit file reading as much as possible. That's why this isn't
+                # in refresh_settings.
+                self.grader = Grader(Settings.active_files)
+                self.display("Settings updated questions")
+                # Set that the user is reviewing, so the next question is
+                # not automatically wrong when they hit the next button
+                # directly after changing the settings (updating the grader).
+                # This lets them view the next question as normal.
+                self.is_reviewing = True
+                self.update_after_settings_finish = False
+
             if not self.scheduled_actions.empty():
                 self.scheduled_actions.get()()  # Execute the scheduled function.
             self.form.update_idletasks()
