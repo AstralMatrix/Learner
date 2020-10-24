@@ -19,6 +19,7 @@ DEFAULT_FONT: Tuple[str, int] = ('Verdana', 9)
 DEFAULT_WIDTH: int = 21
 CURRENT_THEME_STR: str = 'current: {}'
 
+
 class SettingsForm(object):
 
     
@@ -301,12 +302,16 @@ class SettingsForm(object):
         dir_path: str = self.update_directory_path() # Get the current directory path.
         theme_name: str = self.update_theme() # Get the current theme name.
         active_files: List[str] = [f for f in self.all_files.keys() if self.all_files[f]] # Get all active files.
+        # Get the current display item, or 0 if invalid value.
+        display_item: int = 0
+        try: display_item = int(self.display_item_input.get())
+        except ValueError: pass
 
         # Update the setings to the new values.
         Settings.set_value({
             "directory_path": dir_path,
             "active_files": active_files,
-            "display_item": 0,
+            "display_item": display_item,
             "font_size": self.font_size_input.get(),
             "typeface": self.typeface_input.get(),
             "current_theme": theme_name,
