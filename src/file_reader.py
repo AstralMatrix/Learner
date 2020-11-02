@@ -11,18 +11,12 @@ class FileReader:
     
     @staticmethod
     def read_files(file_paths: List[str]) -> List[DataObject]:
-        '''Reads in json files and loads in DataObjects from them.
+        '''Reads the given files and loads in DataObjects from them.
 
-            Every json file should contain a 3D list of strings. The
-            first dimention is the list containing all of the data
-            for each DataObject. The second dimention is a representation
-            of each DataObject. The third dimention is each 'segment' of
-            the DataObject. Each segment contains strings representing
-            the values for that segment.
+            Currently supports the file formats '.json' and '.sfmt'
 
             Args:
-                file_paths (List[str]): A list of all the json file to
-                    be read.
+                file_paths (List[str]): A list of all the files to be read.
 
             Returns:
                 DataObject: All the elements that were loaded in from
@@ -38,36 +32,14 @@ class FileReader:
                 error("unable to load file '{}', file could not be found". format(file_path))
                 return None
 
-            # Ensure the current file is a .json file.
-            if file_path[-5:] != ".json":
-                error("the file '{}' is not a .json file". format(file_path))
+            file_ext: str = file_path[-5:]
+            if file_ext == '.json': # Json data file.
+                if not FileReader.read_json(file_path, data): return None
+            elif file_ext == '.sfmt': # 'Simple Format' data file.
+                if not FileReader.read_sfmt(file_path, data): return None
+            else:
+                error("the file '{}' is not a valid file format (.json or .sfmt)". format(file_path))
                 return None
-
-            with open(file_path, 'r') as f:
-                # Read in the json from the file, if the json is valid.
-                f_data: List[List[str]]
-                try:
-                    f_data = json.loads(f.read())
-                except Exception as e:
-                    error("invalid json in file '{}' <{}>".format(file_path, e))
-                    return None
-
-                # Ensure the data read from the file, and is a list as
-                # expected.
-                if f_data is None or type(f_data) != list:
-                    error("json in file '{}' does not contain a list as expected".format(file_path))
-                    return None
-
-                # Attempt to create a DataObject for each element in
-                # the list read from the file.
-                for elem in f_data:
-                    d_obj = DataObject.create_new(elem)
-                    # Ensure the DataObject was able to be successfully
-                    # created.
-                    if d_obj is None:
-                        error("unable to create DataObject, invalid data from file '{}': \"{}\"".format(file_path, elem))
-                        return None
-                    data.append(d_obj)
 
         # Ensure that data was loaded in, and the files were not empty.
         if len(data) == 0:
@@ -75,6 +47,99 @@ class FileReader:
             return None
 
         return data
+
+
+    @staticmethod
+    def read_json(file_path: str, data: List[DataObject]) -> bool:
+        '''Reads in json files and adds the loaded DataObjects to `data`.
+
+            Every json file should contain a 3D list of strings. The
+            first dimention is the list containing all of the data
+            for each DataObject. The second dimention is a representation
+            of each DataObject. The third dimention is each 'segment' of
+            the DataObject. Each segment contains strings representing
+            the values for that segment.
+
+            Args:
+                file_path (str): The json file to be read.
+                data (List[DataObject]): The list that the newly created
+                    data objects should be added to.
+
+            Returns:
+                bool: If all data was loaded properly (i.e. no errors).
+        '''
+        with open(file_path, 'r', encoding='utf-8') as f:
+            # Read in the json from the file, if the json is valid.
+            f_data: List[List[str]]
+            try:
+                f_data = json.loads(f.read())
+            except Exception as e:
+                error("invalid json in file '{}' <{}>".format(file_path, e))
+                return False
+
+            # Ensure the data read from the file, and is a list as
+            # expected.
+            if f_data is None or type(f_data) != list:
+                error("json in file '{}' does not contain a list as expected".format(file_path))
+                return False
+
+            # Attempt to create a DataObject for each element in
+            # the list read from the file.
+            for elem in f_data:
+                d_obj = DataObject.create_new(elem)
+                # Ensure the DataObject was able to be successfully created.
+                if d_obj is None:
+                    error("unable to create DataObject, invalid data from file '{}': \"{}\"".format(file_path, elem))
+                    return False
+                data.append(d_obj)
+        return True
+
+
+    @staticmethod
+    def read_sfmt(file_path: str, data: List[DataObject]) -> bool:
+        '''Reads in sfmt files and adds the loaded DataObjects to `data`.
+
+            sfmt stands for 'Simple Format' which is a file format designed
+            to be simple and easy for the user to create.
+            
+            Each line in the file represents one DataObject. The lines
+            use a '-' delimeter to seperate the segments for that
+            DataObject, and each segment uses a '/' delimeter to seperate
+            the segments into their respective values. This format does not
+            use escape characters, meaning the '-' and '/' delimeters can
+            not be used as part of regular text in the files, and should
+            only be used to delimit their respective sections.
+            
+            An example line would be "this - is / a - test" which would
+            turn into a DataObject with 3 segments consisting of
+            [["this"], ["is", "a"], ["test"]].
+
+            Args:
+                file_path (str): The sfmt file to be read.
+                data (List[DataObject]): The list that the newly created
+                    data objects should be added to.
+
+            Returns:
+                bool: If all data was loaded properly (i.e. no errors).
+        '''
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                line = line.strip()
+                if line == "": continue
+                # Split the current line up into valid data for a DataObject
+                line_data: List[List[str]] = [s.split("/") for s in line.split("-")]
+                # Remove space formating from all strings.
+                for segment in line_data:
+                    for string in segment:
+                        string = string.strip()
+
+                d_obj = DataObject.create_new(line_data)
+                # Ensure the DataObject was able to be successfully created.
+                if d_obj is None:
+                    error("unable to create DataObject, invalid data from file '{}': \"{}\"".format(file_path, line_data))
+                    return False
+                data.append(d_obj)
+        return True
 
 
     @staticmethod
