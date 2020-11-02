@@ -122,6 +122,7 @@ class Settings:
         else: error("settings unable to load theme colors, expected type 'list' with len(6), got {}".format(type(new_theme_colors)))
 
         theme_dict: dict = data.get("all_themes", None)
+        Settings.theme_names = [] # Prevent duplicate names from being created.
         if theme_dict is not None and \
            type(theme_dict) is dict:
             for key in theme_dict.keys():
