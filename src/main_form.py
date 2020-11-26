@@ -115,8 +115,8 @@ class MainForm:
         #   |   |   |---Submit Button
         #   |   |   |---Settings Button
         #
-        default_fixed_font: Tuple[str, int] = (self.font_style,
-                                               FIXED_ELEMENT_FONT_SIZE)
+        default_fixed_font: Tuple[str, int] = \
+            (self.font_style, FIXED_ELEMENT_FONT_SIZE)
 
         # Create a frame to put the text display in.
         self.display_frame = Frame(self.frame)
@@ -144,9 +144,9 @@ class MainForm:
         self.theme.add_to_group(self.button_frame, ThemeGroup.MAIN_GROUP)
 
         # Create the text box to display the questions and answers.
-        self.display_box = Text(self.display_frame,
-                                font=(self.font_style, self.font_size),
-                                relief=FLAT, height=2)
+        self.display_box = Text(
+            self.display_frame, font=(self.font_style, self.font_size),
+            relief=FLAT, height=2)
         # Fill the frame, leaving a small space around the edge.
         self.display_box.pack(fill=BOTH, expand=True, padx=5, pady=5)
         self.display_box.tag_config('f', justify=CENTER, wrap=WORD)
@@ -156,29 +156,29 @@ class MainForm:
         self.theme.add_to_group(self.display_box, ThemeGroup.TEXT_BOX_GROUP)
 
         # Create the text the precedes the guess input box.
-        self.guess_label = Label(self.guess_frame, text='Answer:',
-                                 font=default_fixed_font)
+        self.guess_label = Label(
+            self.guess_frame, text='Answer:', font=default_fixed_font)
         self.guess_label.pack(side=LEFT)
         self.theme.add_to_group(self.guess_label, ThemeGroup.LABEL_GROUP)
 
         # Create the input box where the user inputs their anwsers.
-        self.guess_input = Entry(self.guess_frame, font=default_fixed_font,
-                                 relief=FLAT)
+        self.guess_input = Entry(
+            self.guess_frame, font=default_fixed_font, relief=FLAT)
         # The input box is expanded along the width of the frame.
         self.guess_input.pack(side=RIGHT, fill=X, expand=True, padx=5, pady=5)
         self.theme.add_to_group(self.guess_input, ThemeGroup.TEXT_BOX_GROUP)
 
         # Create the button for the user to submit their answer.
-        self.submit_button = Button(self.button_frame, text='Begin',
-                                    font=default_fixed_font, relief=FLAT,
-                                    command=self.submit_callback)
+        self.submit_button = Button(
+            self.button_frame, text='Begin', font=default_fixed_font,
+            relief=FLAT, command=self.submit_callback)
         self.submit_button.pack(side=RIGHT, padx=3, pady=3)
         self.theme.add_to_group(self.submit_button, ThemeGroup.BUTTON_GROUP)
 
         # Create the button to open the settings window.
-        self.settings_button = Button(self.button_frame, text='Settings',
-                                      font=default_fixed_font, relief=FLAT,
-                                      command=self.settings_callback)
+        self.settings_button = Button(
+            self.button_frame, text='Settings', font=default_fixed_font,
+            relief=FLAT, command=self.settings_callback)
         self.settings_button.pack(side=LEFT, padx=3, pady=3)
         self.theme.add_to_group(self.settings_button, ThemeGroup.BUTTON_GROUP)
 
