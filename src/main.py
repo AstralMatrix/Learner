@@ -1,12 +1,13 @@
+"""TODO: INSERT DOCSTRING."""
 from main_form import MainForm
-from form_status import FormReturnStatus
+from main_form import FormReturnStatus
 import logging
 from tkinter import messagebox
 from file_reader import FileReader
 
 
 def main_loop() -> None:
-
+    """TODO: INSERT DOCSTRING."""
     while True:
         FileReader.load_settings()
         main_form: MainForm = MainForm()
@@ -14,11 +15,10 @@ def main_loop() -> None:
 
         while form_status is FormReturnStatus.RUNNING:
             form_status = main_form.update()
-        
+
         if form_status is FormReturnStatus.RESTART:
             continue
-        else:
-            break
+        break
 
 
 if __name__ == '__main__':
@@ -31,4 +31,7 @@ if __name__ == '__main__':
         log.addHandler(log_handler)
         log.exception("--- Logging unhandled exception ---")
         print("error: {}".format(e))
-        messagebox.showerror("unhandled exception", "error: an unhandled exception has occured <{}> see log for more details".format(e))
+        messagebox.showerror(
+            "unhandled exception",
+            ("error: an unhandled exception has occured <{}> see log for more "
+             "details").format(e))
