@@ -146,7 +146,7 @@ class MainForm:
         # Create the text box to display the questions and answers.
         self.display_box = Text(
             self.display_frame, font=(self.font_style, self.font_size),
-            relief=FLAT, height=2)
+            relief=FLAT, height=2, highlightthickness=0)
         # Fill the frame, leaving a small space around the edge.
         self.display_box.pack(fill=BOTH, expand=True, padx=5, pady=5)
         self.display_box.tag_config('f', justify=CENTER, wrap=WORD)
@@ -163,7 +163,8 @@ class MainForm:
 
         # Create the input box where the user inputs their anwsers.
         self.guess_input = Entry(
-            self.guess_frame, font=default_fixed_font, relief=FLAT)
+            self.guess_frame, font=default_fixed_font, relief=FLAT,
+            highlightthickness=0)
         # The input box is expanded along the width of the frame.
         self.guess_input.pack(side=RIGHT, fill=X, expand=True, padx=5, pady=5)
         self.theme.add_to_group(self.guess_input, ThemeGroup.TEXT_BOX_GROUP)
@@ -171,14 +172,14 @@ class MainForm:
         # Create the button for the user to submit their answer.
         self.submit_button = Button(
             self.button_frame, text='Begin', font=default_fixed_font,
-            relief=FLAT, command=self.submit_callback)
+            relief=FLAT, command=self.submit_callback, highlightthickness=0)
         self.submit_button.pack(side=RIGHT, padx=3, pady=3)
         self.theme.add_to_group(self.submit_button, ThemeGroup.BUTTON_GROUP)
 
         # Create the button to open the settings window.
         self.settings_button = Button(
             self.button_frame, text='Settings', font=default_fixed_font,
-            relief=FLAT, command=self.settings_callback)
+            relief=FLAT, command=self.settings_callback, highlightthickness=0)
         self.settings_button.pack(side=LEFT, padx=3, pady=3)
         self.theme.add_to_group(self.settings_button, ThemeGroup.BUTTON_GROUP)
 
@@ -292,7 +293,7 @@ class MainForm:
                 # limit file reading as much as possible. That's why this isn't
                 # in refresh_settings.
                 self.grader = Grader(Settings.active_files)
-                self.display("Settings updated questions")
+                self.display("-- new questions loaded --")
                 # Set that the user is reviewing, so the next question is
                 # not automatically wrong when they hit the next button
                 # directly after changing the settings (updating the grader).
