@@ -14,6 +14,7 @@ MIN_SCREEN_SIZE: Tuple[int, int] = (500, 500)  # Minimum screen size.
 SCREEN_TITLE: str = "Settings"  # Window / Form title.
 
 WHITE: str = '#FFFFFF'
+BLACK: str = '#000000'
 LIGHT_GRAY: str = '#F0F0F0'
 MEDIUM_GRAY: str = '#D0D0D0'
 
@@ -89,7 +90,9 @@ class SettingsForm:
         self.file_frame = Frame(self.frame, background=LIGHT_GRAY)
         self.file_frame.pack(fill=BOTH, expand=1, side=LEFT, padx=5, pady=5)
 
-        self.active_files = Listbox(self.file_frame, relief=FLAT)
+        self.active_files = Listbox(
+            self.file_frame, relief=FLAT, foreground=BLACK, background=WHITE,
+            highlightthickness=0)
         self.active_files.pack(fill=BOTH, expand=1, padx=5, pady=5)
         self.refresh_active_files()
 
@@ -97,18 +100,22 @@ class SettingsForm:
         self.file_button_frame.pack(fill=BOTH, expand=0, padx=5, pady=5)
 
         self.activate_button = Button(
-            self.file_button_frame, text='▲', relief=FLAT,
-            background=MEDIUM_GRAY, command=self.activate_callback)
+            self.file_button_frame, text='▲', relief=FLAT, foreground=BLACK,
+            background=MEDIUM_GRAY, command=self.activate_callback,
+            highlightthickness=0)
         self.activate_button.pack(
             fill=BOTH, expand=1, side=LEFT, padx=5, pady=5)
 
         self.disable_button = Button(
-            self.file_button_frame, text='▼', relief=FLAT,
-            background=MEDIUM_GRAY, command=self.disable_callback)
+            self.file_button_frame, text='▼', relief=FLAT, foreground=BLACK,
+            background=MEDIUM_GRAY, command=self.disable_callback,
+            highlightthickness=0)
         self.disable_button.pack(
             fill=BOTH, expand=1, side=RIGHT, padx=5, pady=5)
 
-        self.disabled_files = Listbox(self.file_frame, relief=FLAT)
+        self.disabled_files = Listbox(
+            self.file_frame, relief=FLAT, foreground=BLACK, background=WHITE,
+            highlightthickness=0)
         self.disabled_files.pack(fill=BOTH, expand=1, padx=5, pady=5)
         self.refresh_disabled_files()
         # ------------------------------
@@ -122,12 +129,13 @@ class SettingsForm:
 
         self.directory_label = Label(
             self.directory_frame, text='Directory: ', font=DEFAULT_FONT,
-            background=LIGHT_GRAY)
+            background=LIGHT_GRAY, foreground=BLACK)
         self.directory_label.pack(side=LEFT)
 
         self.directory_input = Entry(
             self.directory_frame, text='null', font=DEFAULT_FONT,
-            background=WHITE, relief=FLAT, width=DEFAULT_WIDTH)
+            background=WHITE, relief=FLAT, width=DEFAULT_WIDTH,
+            foreground=BLACK, highlightthickness=0)
         self.directory_input.pack(side=LEFT)
         self.directory_input.insert(0, Settings.directory_path)
         # ------------------------------
@@ -138,13 +146,13 @@ class SettingsForm:
 
         self.font_size_label = Label(
             self.font_size_frame, text='Font Size:', font=DEFAULT_FONT,
-            background=LIGHT_GRAY)
+            background=LIGHT_GRAY, foreground=BLACK)
         self.font_size_label.pack(side=LEFT, anchor=SW)
 
         self.font_size_input = Scale(
             self.font_size_frame, orient=HORIZONTAL, font=DEFAULT_FONT,
             background=WHITE, relief=FLAT, from_=4, to=140, sliderlength=20,
-            resolution=4, length=175)
+            resolution=4, length=175, foreground=BLACK, highlightthickness=0)
         self.font_size_input.pack(side=LEFT)
         self.font_size_input.set(Settings.font_size)
         # ------------------------------
@@ -155,12 +163,13 @@ class SettingsForm:
 
         self.typeface_label = Label(
             self.typeface_frame, text='Typeface: ', font=DEFAULT_FONT,
-            background=LIGHT_GRAY)
+            background=LIGHT_GRAY, foreground=BLACK)
         self.typeface_label.pack(side=LEFT)
 
         self.typeface_input = Entry(
             self.typeface_frame, text='Verdana', font=DEFAULT_FONT,
-            width=DEFAULT_WIDTH, background=WHITE, relief=FLAT)
+            width=DEFAULT_WIDTH, background=WHITE, relief=FLAT,
+            foreground=BLACK, highlightthickness=0)
         self.typeface_input.pack(side=LEFT)
         self.typeface_input.insert(0, Settings.typeface)
         # ------------------------------
@@ -171,13 +180,13 @@ class SettingsForm:
 
         self.theme_label = Label(
             self.theme_frame, text='Theme: ', font=DEFAULT_FONT,
-            background=LIGHT_GRAY)
+            background=LIGHT_GRAY, foreground=BLACK)
         self.theme_label.pack(side=LEFT)
 
         self.theme_input = Listbox(
             self.theme_frame, font=DEFAULT_FONT, background=WHITE,
             relief=FLAT, height=len(Settings.theme_names)+3,
-            width=DEFAULT_WIDTH+2)
+            width=DEFAULT_WIDTH+2, foreground=BLACK, highlightthickness=0)
         self.theme_input.pack(side=LEFT)
         self.theme_input.insert(
             END, CURRENT_THEME_STR.format(Settings.current_theme))
@@ -195,12 +204,13 @@ class SettingsForm:
 
         self.display_item_label = Label(
             self.display_item_frame, text='Display Item: ', font=DEFAULT_FONT,
-            background=LIGHT_GRAY)
+            background=LIGHT_GRAY, foreground=BLACK)
         self.display_item_label.pack(side=LEFT)
 
         self.display_item_input = Spinbox(
             self.display_item_frame, from_=-1, to=100, font=DEFAULT_FONT,
-            width=DEFAULT_WIDTH-4, background=WHITE, relief=FLAT)
+            width=DEFAULT_WIDTH-4, background=WHITE, relief=FLAT,
+            foreground=BLACK, highlightthickness=0)
         self.display_item_input.pack(side=LEFT)
         self.display_item_input.delete(0, END)
         self.display_item_input.insert(0, Settings.display_item)
@@ -212,12 +222,14 @@ class SettingsForm:
 
         self.save_button = Button(
             self.button_frame, text='Save & Quit', background=MEDIUM_GRAY,
-            relief=FLAT, command=self.save_callback)
+            relief=FLAT, command=self.save_callback, foreground=BLACK,
+            highlightthickness=0)
         self.save_button.pack(side=RIGHT, padx=3, pady=3)
 
         self.cancel_button = Button(
             self.button_frame, text='Cancel', background=MEDIUM_GRAY,
-            relief=FLAT, command=self.cancel_callback)
+            relief=FLAT, command=self.cancel_callback, foreground=BLACK,
+            highlightthickness=0)
         self.cancel_button.pack(side=LEFT, padx=3, pady=3)
         # ------------------------------
 
