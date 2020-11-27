@@ -48,6 +48,11 @@ class SettingsForm:
         # Make the main frame fit the size of the window.
         self.frame.pack(fill=BOTH, expand=1)
 
+        # Track the most recenly selected item in the active files and disabled
+        # files listboxes.
+        self.sel_item_in_active_files: int = 0
+        self.sel_item_in_disabled_files: int = 0
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -245,21 +250,39 @@ class SettingsForm:
 
     def activate_callback(self) -> None:
         """Take currently selected 'disabled' file and sets it to 'enabled'."""
+        # Get and save the index of the currently selected item if it exists,
+        # this allows for the next item to be automatically selected after the
+        # currently selected item is transfered, allowing for rapid item
+        # activation.
+        current_selection: tuple = self.disabled_files.curselection()
+        if len(current_selection) > 0:
+            self.sel_item_in_disabled_files = current_selection[0]
+
         file: str = str(self.disabled_files.get(ACTIVE))
         if file in self.all_files.keys():
             self.all_files[file] = True
         # Update the file display text boxes.
         self.refresh_active_files()
         self.refresh_disabled_files()
+        self.disabled_files.activate(self.sel_item_in_disabled_files)
 
     def disable_callback(self) -> None:
         """Take currently selected 'enabled' file and sets it to 'disabled'."""
+        # Get and save the index of the currently selected item if it exists,
+        # this allows for the next item to be automatically selected after the
+        # currently selected item is transfered, allowing for rapid item
+        # deactivation.
+        current_selection: tuple = self.active_files.curselection()
+        if len(current_selection) > 0:
+            self.sel_item_in_active_files = current_selection[0]
+
         file: str = str(self.active_files.get(ACTIVE))
         if file in self.all_files.keys():
             self.all_files[file] = False
         # Update the file display text boxes.
         self.refresh_active_files()
         self.refresh_disabled_files()
+        self.active_files.activate(self.sel_item_in_active_files)
 
     def refresh_active_files(self) -> None:
         """Clear and fill active files text box with current active files.
