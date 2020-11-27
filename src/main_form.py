@@ -4,12 +4,12 @@ import tkinter as tk
 from tkinter import Frame, Text, Label, Button, S, X, BOTH, FLAT, CENTER, \
                     WORD, LEFT, DISABLED, NORMAL, END, TclError, Entry, RIGHT
 from queue import Queue
-from form_status import FormReturnStatus
 from grader import Grader
 from theme import Theme, ThemeGroup
 from settings import Settings
 from settings_form import SettingsForm
 from typing import Tuple
+from enum import Enum
 
 
 INIT_SCREEN_SIZE: str = '854x405'  # Starting screen size.
@@ -275,7 +275,7 @@ class MainForm:
         self.form.destroy()
         self.return_status = FormReturnStatus.RESTART
 
-    def update(self) -> FormReturnStatus:
+    def update(self) -> 'FormReturnStatus':
         """Update the form screen.
 
         This is used to update the screen every 'tick' when this
@@ -308,3 +308,11 @@ class MainForm:
         except TclError:  # The form has been destroyed (i.e. on restart)
             return self.return_status
         return FormReturnStatus.RUNNING
+
+
+class FormReturnStatus(Enum):
+    """TODO: INSERT DOCSTRING."""
+
+    STOP: int = -1
+    RUNNING: int = 0
+    RESTART: int = 1
