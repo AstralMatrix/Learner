@@ -6,7 +6,7 @@ import json
 
 
 # The relative path to the settings json file.
-SETTINGS_PATH: str = "../data/settings.json"
+SETTINGS_PATH: str = "./settings.json"
 
 
 class Settings:
