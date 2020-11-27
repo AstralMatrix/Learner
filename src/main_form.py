@@ -183,6 +183,13 @@ class MainForm:
         self.settings_button.pack(side=LEFT, padx=3, pady=3)
         self.theme.add_to_group(self.settings_button, ThemeGroup.BUTTON_GROUP)
 
+        # Create the text the precedes the guess input box.
+        self.stats_label = Label(
+            self.button_frame, text='-/-', font=default_fixed_font)
+        self.stats_label.pack(side=LEFT, padx=20, pady=3)
+        self.theme.add_to_group(self.stats_label, ThemeGroup.LABEL_GROUP)
+        self.update_stats()
+
     def submit_callback(self, event=None):
         """Control grading the user response and changing form state.
 
@@ -205,6 +212,8 @@ class MainForm:
                 self.answer_correct()
             else:
                 self.answer_wrong()
+
+            self.update_stats()
 
             self.is_reviewing = True  # The user is now reviewing the answer.
             self.submit_button.config(text="Next")
@@ -255,7 +264,7 @@ class MainForm:
         #     )
         # ).start()
 
-    def unblock_progress(self):
+    def unblock_progress(self) -> None:
         """Unlock the progress, allow the user to move on after reviewing."""
         self.progress_blocked = False
 
@@ -270,6 +279,14 @@ class MainForm:
         self.display_box.insert(END, msg, 'f')
         # Lock the display text box so that it can't be edited.
         self.display_box.config(state=DISABLED)
+
+    def update_stats(self) -> None:
+        """Update the stats label, to display the most recent statistics."""
+        self.stats_label.config(
+            text="{}/{}     {}%".format(
+                self.grader.number_of_correct_items,
+                self.grader.total_number_of_items,
+                self.grader.percent_correct))
 
     def restart(self) -> None:
         """Restart the form."""
@@ -294,6 +311,7 @@ class MainForm:
                 # in refresh_settings.
                 self.grader = Grader(Settings.active_files)
                 self.display("-- new questions loaded --")
+                self.update_stats()
                 # Set that the user is reviewing, so the next question is
                 # not automatically wrong when they hit the next button
                 # directly after changing the settings (updating the grader).
