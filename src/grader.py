@@ -31,6 +31,13 @@ class Grader:
         self.__elements: QuizQueue = QuizQueue(self.__raw_data)
         self.__curr_element: DataObject = self.__elements.dequeue()
 
+        # Track the satistics of the total number of quiz elements, and the
+        # number the user got correct.
+        self.__total_items: int = 0
+        if self.__raw_data is not None:
+            self.__total_items = len(self.__raw_data)
+        self.__number_correct: int = 0
+
     def get_display_question(self, segment_idx: int) -> str:
         """Get the segment of a data object.
 
@@ -74,4 +81,23 @@ class Grader:
         # queue, so it can be given again.
         if not is_correct:
             self.__elements.recycle()
+        else:
+            self.__number_correct += 1
         return is_correct
+
+    @property
+    def total_number_of_items(self) -> int:
+        """Get the total number of elements loaded."""
+        return self.__total_items
+
+    @property
+    def number_of_correct_items(self) -> int:
+        """Get the number of elements the user got correct."""
+        return self.__number_correct
+
+    @property
+    def percent_correct(self) -> int:
+        """Get the percent of total elements the user got correct."""
+        if self.__total_items == 0:
+            return 0
+        return int((self.__number_correct / self.__total_items) * 100)
