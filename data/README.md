@@ -8,7 +8,7 @@ Two example files come in this directory (one of each type).
 
 A DataObject is the container for a given item that you want to be quizzed on. Therefore, one DataObject represents one question (with corresponding answers).
 
-A DataObject contains segments, each segment is a list of strings. Each segment represents equivalent parts of the question. For example: Chinese Translation, English Translation, Pinyin. Since each of these parts are equivalent. This is simply a way of splitting up questions into different parts, so you can be quizzed on one segment, and provide the other segments as answers.
+A DataObject contains segments, each segment is a list of strings. Each segment represents equivalent parts of the question. For example: Chinese Translation, English Translation, Pinyin. Since each of these parts are equivalent. This is simply a way of splitting up questions into different parts, so you can be quizzed on one segment, and provide a part of the other segments as answers.
 
 Within each segment of a DataObject can be multiple strings. These strings each represent a variation of that part of the question. For example if the first segment is "What is my favorite ice cream" the second segment might be "Mint" and "Vanilla", since both are valid answers to the question.
 
