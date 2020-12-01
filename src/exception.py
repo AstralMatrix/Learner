@@ -15,9 +15,9 @@ def _get_log():
 def error(msg: str) -> None:
     """Log and display handled errors (i.e. file not found)."""
     log = _get_log()
-    log.error("--- Logging error ---\nerror: %s", msg)
-    print("error:", msg)
-    messagebox.showerror("error", "error: {}".format(msg))
+    log.warning("--- Logging warning ---\nwarning: %s", msg)
+    print("warning:", msg)
+    messagebox.showwarning("warning", "warning: {}".format(msg))
 
 
 def unhandled_error(item, exc, val, tb) -> None:
