@@ -41,7 +41,7 @@ alternatively, you can click `Code`, then `Download ZIP`, then extract the zip f
 
 ## How to Make Data Files
 
-Please refer to the `README.md` in `./data`
+Please refer to the [README.md](data/README.md) in `./data`
 
 ## Settings
 
@@ -56,7 +56,7 @@ Please refer to the `README.md` in `./data`
 - Typeface:
   - The font used.
 - Theme:
-  - The theme used. More themes can be defined in `settings.json`
+  - The theme used. More themes can be defined in [settings.json](src/settings.json)
 - Display Item:
   - The segment of the "quiz element" to be displayed, use -1 for random segments.
 
@@ -72,15 +72,7 @@ If an error or warning occurs, a message box is displayed, and it is logged in `
 
 **Quiz:**
 
-![Main_Form](https://user-images.githubusercontent.com/25624496/100784826-c58be200-33dd-11eb-9ce1-2ccc612873c8.png)
-
-**Answer Correct:**
-
-![GUI_Correct](https://user-images.githubusercontent.com/25624496/100784835-c91f6900-33dd-11eb-9a65-11fab1bd2480.png)
-
-**Answer Wrong:**
-
-![GUI_Wrong](https://user-images.githubusercontent.com/25624496/100784839-cae92c80-33dd-11eb-9448-49dc7d1ba682.png)
+![Example](https://user-images.githubusercontent.com/25624496/101077283-a1add500-3572-11eb-98c4-99c92a5c47b7.gif)
 
 **Settings:**
 
@@ -88,4 +80,4 @@ If an error or warning occurs, a message box is displayed, and it is logged in `
 
 ## License
 
-This program is provided under the [MIT License](LICENSE.md)
+This program is provided under the [MIT License](LICENSE)
