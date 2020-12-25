@@ -23,7 +23,7 @@ This program does not use any `pip` packages, but does require `tkinter`. This c
 To install `tkinter` on debian you can run:
 
 ```console
-sudo apt install python3-tkinter
+sudo apt install python3-tk
 ```
 In other cases, please refer to your package manager.
 
