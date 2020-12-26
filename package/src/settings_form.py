@@ -3,11 +3,13 @@ import tkinter as tk
 from tkinter import Frame, Listbox, Button, Label, Entry, Spinbox, BOTH, \
                     LEFT, RIGHT, FLAT, TOP, X, Y, SW, HORIZONTAL, END, Scale, \
                     BOTTOM, ACTIVE, TclError
-from settings import Settings
-from file_reader import FileReader
 import os
 import os.path
 from typing import List, Dict, Tuple
+
+from package.src.settings import Settings
+from package.src.file_reader import FileReader
+
 
 INIT_SCREEN_SIZE: str = '500x500'  # Starting screen size.
 MIN_SCREEN_SIZE: Tuple[int, int] = (500, 500)  # Minimum screen size.

@@ -1,8 +1,9 @@
 """TODO: INSERT DOCSTRING."""
-from file_reader import FileReader
-from data_object import DataObject
-from quiz_queue import QuizQueue
 from typing import List, Optional
+
+from package.src.file_reader import FileReader
+from package.src.data_object import DataObject
+from package.src.quiz_queue import QuizQueue
 
 
 # Data object displaying that an error occured.
@@ -29,7 +30,7 @@ class Grader:
 
         # Create a quiz queue to randomize the elements.
         self.__elements: QuizQueue = QuizQueue(self.__raw_data)
-        self.__curr_element: DataObject = self.__elements.dequeue()
+        self.__curr_element: DataObject = None
 
         # Track the satistics of the total number of quiz elements, and the
         # number the user got correct.

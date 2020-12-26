@@ -1,12 +1,13 @@
 """TODO: INSERT DOCSTRING."""
-from exception import error
 from typing import List
 import os.path
 import json
 
+from package.src.exception import error
+
 
 # The relative path to the settings json file.
-SETTINGS_PATH: str = "./settings.json"
+SETTINGS_PATH: str = "package/src/settings.json"
 
 
 class Settings:
@@ -19,7 +20,7 @@ class Settings:
     # fully loaded in (i.e. the list of themes) while keeping them present
     # after the settings are exported and saved.
     __raw_data: dict = {}
-    directory_path: str = '../data/'  # Path to the data files.
+    directory_path: str = 'data/'  # Path to the data files.
     active_files: List[str] = []  # All data files that are active.
     # Segment of the DataObject to display as the question
     display_item: int = 0

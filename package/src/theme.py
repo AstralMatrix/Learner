@@ -1,7 +1,8 @@
 """TODO: INSERT DOCSTRING."""
 from enum import Enum
 from typing import List, Dict
-from settings import Settings
+
+from package.src.settings import Settings
 
 
 class Theme:

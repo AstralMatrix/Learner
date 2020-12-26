@@ -2,9 +2,10 @@
 import os.path
 import json
 from typing import List, Optional
-from data_object import DataObject
-from exception import error
-from settings import Settings, SETTINGS_PATH
+
+from package.src.data_object import DataObject
+from package.src.exception import error
+from package.src.settings import Settings, SETTINGS_PATH
 
 
 class FileReader:

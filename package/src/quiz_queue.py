@@ -1,8 +1,9 @@
 """TODO: INSERT DOCSTRING."""
-from data_object import DataObject
 from queue import Queue
 from typing import List
 from random import randint
+
+from package.src.data_object import DataObject
 
 
 class QuizQueue:
@@ -54,7 +55,6 @@ class QuizQueue:
         # Finish copying the old queue items into the new queue.
         while not self.__queue.empty():
             new_queue.put(self.__queue.get())
-            idx += 1
         self.__queue = new_queue
 
     def dequeue(self) -> DataObject:
@@ -72,3 +72,13 @@ class QuizQueue:
         self.__last_item = ret_val
 
         return ret_val
+
+    @property
+    def length(self) -> int:
+        """Get the current length of the queue."""
+        return self.__queue.qsize()
+
+    @property
+    def total_length(self) -> int:
+        """Get the total length of the queue."""
+        return len(self.__data)

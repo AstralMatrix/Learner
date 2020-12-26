@@ -1,15 +1,16 @@
 """TODO: INSERT DOCSTRING."""
-import exception
 import tkinter as tk
 from tkinter import Frame, Text, Label, Button, S, X, BOTH, FLAT, CENTER, \
                     WORD, LEFT, DISABLED, NORMAL, END, TclError, Entry, RIGHT
 from queue import Queue
-from grader import Grader
-from theme import Theme, ThemeGroup
-from settings import Settings
-from settings_form import SettingsForm
 from typing import Tuple
 from enum import Enum
+
+import package.src.exception as exception
+from package.src.grader import Grader
+from package.src.theme import Theme, ThemeGroup
+from package.src.settings import Settings
+from package.src.settings_form import SettingsForm
 
 
 INIT_SCREEN_SIZE: str = '854x405'  # Starting screen size.
