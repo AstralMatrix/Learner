@@ -56,7 +56,7 @@ Please refer to the [README.md](data/README.md) in `./data`
 - Typeface:
   - The font used.
 - Theme:
-  - The theme used. More themes can be defined in [settings.json](src/settings.json)
+  - The theme used. More themes can be defined in [settings.json](package/src/settings.json)
 - Display Item:
   - The segment of the "quiz element" to be displayed, use -1 for random segments.
 
