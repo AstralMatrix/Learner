@@ -1,6 +1,7 @@
 """TODO: INSERT DOCSTRING."""
 import logging
 from tkinter import messagebox
+from time import sleep
 
 from package.src.main_form import MainForm, FormReturnStatus
 from package.src.file_reader import FileReader
@@ -15,6 +16,7 @@ def main_loop() -> None:
 
         while form_status is FormReturnStatus.RUNNING:
             form_status = main_form.update()
+            sleep(0.05)  # Prevent excessive CPU usage.
 
         if form_status is FormReturnStatus.RESTART:
             continue
