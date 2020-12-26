@@ -57,6 +57,7 @@ class Settings:
             error("settings can not load from type {}, must be type 'dict'"
                   .format(type(data)))
             return
+
         Settings.__raw_data = data
 
         # Verify and set the new directory path. Ensure the new directory
@@ -185,6 +186,13 @@ class Settings:
                 Settings.typeface = update_data.get(key, None)
             elif key == "current_theme":
                 Settings.current_theme = update_data.get(key, None)
+
+                # Prevent an error of the settings file doesn't exist by
+                # breaking so the theme colors are not set to colors that don't
+                # exist.
+                if Settings.__raw_data.get("all_themes", None) is None:
+                    break
+
                 Settings.theme_colors = (
                     Settings.__raw_data.get("all_themes", None)
                     .get(Settings.current_theme))
