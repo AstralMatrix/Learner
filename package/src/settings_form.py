@@ -20,7 +20,7 @@ BLACK: str = '#000000'
 LIGHT_GRAY: str = '#F0F0F0'
 MEDIUM_GRAY: str = '#D0D0D0'
 
-DEFAULT_FONT: Tuple[str, int] = ('Verdana', 9)
+DEFAULT_FONT: Tuple[str, int] = ('', 9)
 DEFAULT_WIDTH: int = 21
 CURRENT_THEME_STR: str = 'current: {}'
 
