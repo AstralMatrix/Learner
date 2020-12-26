@@ -1,7 +1,8 @@
 """TODO: INSERT DOCSTRING."""
 import tkinter as tk
 from tkinter import Frame, Text, Label, Button, S, X, BOTH, FLAT, CENTER, \
-                    WORD, LEFT, DISABLED, NORMAL, END, TclError, Entry, RIGHT
+                    WORD, LEFT, DISABLED, NORMAL, END, TclError, Entry, \
+                    RIGHT, TOP, BOTTOM
 from queue import Queue
 from typing import Tuple
 from enum import Enum
@@ -93,7 +94,21 @@ class MainForm:
         self.display_item = Settings.display_item
         self.font_size = Settings.font_size
         self.font_style = Settings.typeface
+
+        # Update fonts.
         self.display_box.config(font=(self.font_style, self.font_size))
+        self.guess_label.config(
+            font=(self.font_style, FIXED_ELEMENT_FONT_SIZE))
+        self.guess_input.config(
+            font=(self.font_style, FIXED_ELEMENT_FONT_SIZE))
+        self.settings_button.config(
+            font=(self.font_style, FIXED_ELEMENT_FONT_SIZE))
+        self.submit_button.config(
+            font=(self.font_style, FIXED_ELEMENT_FONT_SIZE))
+        self.stats_label.config(
+            font=(self.font_style, FIXED_ELEMENT_FONT_SIZE))
+
+        # Update theme colors.
         self.theme.update_colors()
         self.theme.set_theme_color()
 
@@ -119,18 +134,18 @@ class MainForm:
         default_fixed_font: Tuple[str, int] = \
             (self.font_style, FIXED_ELEMENT_FONT_SIZE)
 
-        # Create a frame to put the text display in.
-        self.display_frame = Frame(self.frame)
-        # Expand it to the size of the main frame.
-        self.display_frame.pack(fill=BOTH, expand=True)
-        self.theme.add_to_group(self.display_frame, ThemeGroup.MAIN_GROUP)
-
         # Create a frame to put all the elements that are not the display
         # (i.e. the inputs).
         self.content_frame = Frame(self.frame)
         # Make this frame fill just the bottom part of the screen it needs.
-        self.content_frame.pack(anchor=S, fill=X, expand=False)
+        self.content_frame.pack(anchor=S, fill=X, expand=False, side=BOTTOM)
         self.theme.add_to_group(self.content_frame, ThemeGroup.MAIN_GROUP)
+
+        # Create a frame to put the text display in.
+        self.display_frame = Frame(self.frame)
+        # Expand it to the size of the main frame.
+        self.display_frame.pack(fill=BOTH, expand=True, side=TOP)
+        self.theme.add_to_group(self.display_frame, ThemeGroup.MAIN_GROUP)
 
         # Create a frame to hold the guess input line.
         self.guess_frame = Frame(self.content_frame)
@@ -197,7 +212,7 @@ class MainForm:
         Callback function for the 'submit' button.
         """
         del event  # The 'event' from the callback is never used, delete it.
-        if exception.form_exists():
+        if self.block_callback():
             return
 
         # Move on to the next question, displaying it to the user.
@@ -227,11 +242,19 @@ class MainForm:
 
         Callback function for the 'settings' button.
         """
-        if exception.form_exists():
+        if self.block_callback():
             return
 
         if self.settings_form is None:
             self.settings_form = SettingsForm()
+
+    def block_callback(self) -> bool:
+        """Prevent callbacks from being activated.
+
+        This is used when the settings form or popup form are shown so the user
+        can not interact with the main form at the same time.
+        """
+        return exception.form_exists() or self.settings_form is not None
 
     def next_question(self) -> None:
         """Move on to the next question, displaying it."""
