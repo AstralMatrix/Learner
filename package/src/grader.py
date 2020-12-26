@@ -7,7 +7,7 @@ from package.src.quiz_queue import QuizQueue
 
 
 # Data object displaying that an error occured.
-ERROR_D_OBJ: DataObject = DataObject([["ERROR"]])
+ERROR_D_OBJ: DataObject = DataObject([["No objects were able to be loaded"]])
 
 
 class Grader:
