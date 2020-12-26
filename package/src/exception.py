@@ -3,6 +3,12 @@ import traceback
 import logging
 from tkinter import messagebox
 
+from package.src.pop_up import PopupForm
+
+# Used to notify the other forms if an exception form exists so they can
+# block their callbacks.
+exception_form_exists = False
+
 
 def _get_log():
     """Create and return a log object."""
@@ -17,7 +23,10 @@ def error(msg: str) -> None:
     log = _get_log()
     log.warning("--- Logging warning ---\nwarning: %s", msg)
     print("warning:", msg)
-    messagebox.showwarning("warning", "warning: {}".format(msg))
+    global exception_form_exists
+    exception_form_exists = True
+    PopupForm.create_popup("Notice", "Notice: ", msg)
+    exception_form_exists = False
 
 
 def unhandled_error(item, exc, val, tb) -> None:
@@ -29,3 +38,8 @@ def unhandled_error(item, exc, val, tb) -> None:
     print(exception)
     messagebox.showerror("unhandled exception", "error: an unhandled \
         exception has occured <{}> see log for more details".format(val))
+
+
+def form_exists() -> bool:
+    """Return if a excpetion form currently exists."""
+    return exception_form_exists
