@@ -197,6 +197,9 @@ class MainForm:
         Callback function for the 'submit' button.
         """
         del event  # The 'event' from the callback is never used, delete it.
+        if exception.form_exists():
+            return
+
         # Move on to the next question, displaying it to the user.
         if self.is_reviewing:
             if not self.progress_blocked:
@@ -224,6 +227,9 @@ class MainForm:
 
         Callback function for the 'settings' button.
         """
+        if exception.form_exists():
+            return
+
         if self.settings_form is None:
             self.settings_form = SettingsForm()
 
