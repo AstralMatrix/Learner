@@ -68,7 +68,8 @@ class DataObject:
 
         ret_val = ""
         for string in self.__data[idx]:  # Concat every part of the segment.
-            ret_val += string + " | "
+            if not string.strip().startswith('!'):
+                ret_val += string + " | "
         # Return the new string except for the trailing " | ".
         return ret_val[:-3].strip()
 
