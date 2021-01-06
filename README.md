@@ -1,6 +1,6 @@
 # Learner
 
-Version 0.1.0
+Version 0.1.1
 
 ## Description
 
@@ -33,7 +33,7 @@ To get and run the Learner program, run:
 
 ```console
 $ git clone https://github.com/AstralMatrix/Learner.git
-$ cd Learner/src
+$ cd Learner
 $ python3 main.pyw
 ```
 
