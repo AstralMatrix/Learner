@@ -80,4 +80,4 @@ If an error or warning occurs, a message box is displayed, and it is logged in `
 
 ## License
 
-This program is provided under the [MIT License](LICENSE)
+This program is provided under the [GPL v3 License](LICENSE)
